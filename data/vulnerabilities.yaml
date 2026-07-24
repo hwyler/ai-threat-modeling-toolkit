@@ -1,0 +1,546 @@
+# AI Vulnerability Catalog
+#
+# Each entry is a control weakness, not an attack. Vulnerabilities describe the
+# broken or missing state that makes a threat vector (see threat_vectors.yaml)
+# feasible. "applies_to" lists which AI system types the item is most relevant
+# to; "all" means it applies regardless of system type.
+#
+# Fields:
+#   id            stable identifier, do not renumber existing entries
+#   name          short label
+#   category      grouping used in docs/03-vulnerability-catalog.md
+#   applies_to    [predictive, generative, agentic] subset, or [all]
+#   description   one-sentence, plain-language statement of the weakness
+#   stride        related STRIDE-AI category from docs/02-stride-ai.md
+
+- id: V001
+  name: Weak Access Control
+  category: access_and_exposure
+  applies_to: [all]
+  description: Users, services, pipelines, or agents can reach models, datasets, prompts, tools, or configuration beyond their authorized scope because least privilege is not enforced.
+  stride: [Tampering, Elevation of Privilege]
+
+- id: V002
+  name: Insecure API Exposure
+  category: access_and_exposure
+  applies_to: [all]
+  description: Model endpoints or orchestration services are reachable without strong authentication, encryption, abuse controls, or request validation.
+  stride: [Spoofing, Information Disclosure]
+
+- id: V003
+  name: Unrestricted Query Access
+  category: access_and_exposure
+  applies_to: [predictive, generative]
+  description: A model can be queried at high volume or fidelity without rate limits, quotas, or anomaly detection, making extraction and probing cheap.
+  stride: [Information Disclosure, Denial of Service]
+
+- id: V004
+  name: Weak Prompt Isolation
+  category: access_and_exposure
+  applies_to: [generative, agentic]
+  description: System instructions, developer prompts, user input, retrieved content, and tool output are mixed without clear trust separation, so the model cannot tell trusted instructions from adversarial content.
+  stride: [Spoofing, Tampering]
+
+- id: V005
+  name: Excessive Tool Permissions
+  category: access_and_exposure
+  applies_to: [agentic]
+  description: An agent or orchestration service holds broader access to APIs, files, or enterprise systems than its use case requires.
+  stride: [Elevation of Privilege]
+
+- id: V006
+  name: Weak Runtime Authorization
+  category: access_and_exposure
+  applies_to: [agentic]
+  description: The model itself, rather than a deterministic policy layer, decides whether a request or tool call is allowed.
+  stride: [Elevation of Privilege]
+
+- id: V007
+  name: Limited Tenant Isolation
+  category: access_and_exposure
+  applies_to: [all]
+  description: Sessions, memory, embeddings, or inference resources are not adequately separated across users or business units in a shared platform.
+  stride: [Information Disclosure]
+
+- id: V008
+  name: Weak Change Management
+  category: change_and_artifact_integrity
+  applies_to: [all]
+  description: Models, prompts, datasets, or runtime settings can be modified without formal approval, testing, and rollback controls.
+  stride: [Tampering, Repudiation]
+
+- id: V009
+  name: Weak Artifact Protection
+  category: change_and_artifact_integrity
+  applies_to: [all]
+  description: Model weights, checkpoints, prompt templates, or evaluation sets are stored without strong encryption, integrity checks, and access restrictions.
+  stride: [Tampering, Information Disclosure]
+
+- id: V010
+  name: Complex Model Loading
+  category: change_and_artifact_integrity
+  applies_to: [all]
+  description: Deserialization or custom loading routines allow unsafe code execution or untrusted object parsing at model load time.
+  stride: [Tampering]
+
+- id: V011
+  name: Unauthorized Parameter Changes
+  category: change_and_artifact_integrity
+  applies_to: [all]
+  description: Model weights, thresholds, or safety configuration can be altered without strict approval, access control, and audit trail.
+  stride: [Tampering]
+
+- id: V012
+  name: Inconsistent Version Control
+  category: change_and_artifact_integrity
+  applies_to: [all]
+  description: Datasets, prompts, models, and configurations are not versioned consistently, creating uncertainty about what is running in production.
+  stride: [Repudiation]
+
+- id: V013
+  name: Insufficient Provenance Controls
+  category: data_governance_and_quality
+  applies_to: [all]
+  description: The organization cannot reliably verify where data, labels, models, or prompts came from or whether they remained intact through the lifecycle.
+  stride: [Spoofing, Tampering]
+
+- id: V014
+  name: Data Poisoning Susceptibility
+  category: data_governance_and_quality
+  applies_to: [predictive, generative]
+  description: Training, fine-tuning, feedback, or retrieval data can be introduced or altered without validation, curation, or anomaly detection.
+  stride: [Tampering]
+
+- id: V015
+  name: Weak Data Governance
+  category: data_governance_and_quality
+  applies_to: [all]
+  description: The organization lacks formal ownership, quality, retention, and access rules across AI data pipelines.
+  stride: [Tampering, Information Disclosure]
+
+- id: V016
+  name: Weak Data Quality Controls
+  category: data_governance_and_quality
+  applies_to: [predictive, generative]
+  description: Completeness, consistency, and freshness thresholds for training and retrieval data are not defined or enforced.
+  stride: [Tampering]
+
+- id: V017
+  name: Distributed Data Inconsistency
+  category: data_governance_and_quality
+  applies_to: [all]
+  description: Multiple repositories or feature stores hold different versions of supposedly authoritative data without reconciliation.
+  stride: [Repudiation]
+
+- id: V018
+  name: Complex Data Transformations
+  category: data_governance_and_quality
+  applies_to: [predictive]
+  description: Raw data passes through many preprocessing stages that are poorly documented or weakly tested, allowing silent corruption or bias to enter unnoticed.
+  stride: [Tampering]
+
+- id: V019
+  name: Schema Incompatibility
+  category: data_governance_and_quality
+  applies_to: [all]
+  description: Pipeline components rely on inconsistent field definitions, units, or metadata conventions, forcing ad hoc conversions that can corrupt data silently.
+  stride: [Tampering]
+
+- id: V020
+  name: Uncontrolled Data Ingestion
+  category: data_governance_and_quality
+  applies_to: [generative]
+  description: Data enters the system from multiple sources without centralized validation, source trust assessment, or ownership controls.
+  stride: [Tampering]
+
+- id: V021
+  name: Untrusted External Data Sources
+  category: data_governance_and_quality
+  applies_to: [generative]
+  description: The system relies on scraped, crowdsourced, or vendor-supplied data without source validation, licensing review, or trust classification.
+  stride: [Tampering]
+
+- id: V022
+  name: Weak De-Identification
+  category: data_governance_and_quality
+  applies_to: [predictive, generative]
+  description: Personal or regulated data is masked or pseudonymized in ways that still permit re-identification through linkage or inference.
+  stride: [Information Disclosure]
+
+- id: V023
+  name: Training Data Memorization
+  category: data_governance_and_quality
+  applies_to: [generative]
+  description: The model retains and can reproduce sensitive or proprietary content from training data because minimization and privacy-preserving techniques were insufficient.
+  stride: [Information Disclosure]
+
+- id: V024
+  name: Weak Transfer Validation
+  category: model_lifecycle
+  applies_to: [generative]
+  description: Pretrained or foundation models are adopted without verifying they remain safe and reliable after fine-tuning or contextual adaptation.
+  stride: [Tampering]
+
+- id: V025
+  name: Insufficient Model Validation
+  category: model_lifecycle
+  applies_to: [all]
+  description: Pre-release testing does not adequately evaluate security, robustness, fairness, privacy, and failure modes.
+  stride: [Tampering]
+
+- id: V026
+  name: Weak Feedback Loops
+  category: model_lifecycle
+  applies_to: [all]
+  description: User feedback, incident findings, and performance observations are not systematically collected and fed back into model governance.
+  stride: [Repudiation]
+
+- id: V027
+  name: Missing Drift Controls
+  category: model_lifecycle
+  applies_to: [predictive, generative]
+  description: Input distributions, feature behavior, or retrieval quality are not monitored for change, so the deployed system can silently diverge from its validated state.
+  stride: [Tampering]
+
+- id: V028
+  name: Insufficient Logging
+  category: observability_and_response
+  applies_to: [all]
+  description: The system does not retain adequate records of prompts, retrieved context, model versions, tool calls, or deployment events.
+  stride: [Repudiation]
+
+- id: V029
+  name: Inadequate Monitoring
+  category: observability_and_response
+  applies_to: [all]
+  description: The system observes infrastructure health but not model misuse, output quality degradation, or unsafe agent behavior.
+  stride: [Denial of Service, Tampering]
+
+- id: V030
+  name: Weak Event Traceability
+  category: observability_and_response
+  applies_to: [all]
+  description: Event records are incomplete or disconnected across pipeline stages, preventing correlation of an incident from input to downstream action.
+  stride: [Repudiation]
+
+- id: V031
+  name: Weak Performance Auditing
+  category: observability_and_response
+  applies_to: [all]
+  description: Model accuracy, robustness, and fairness are not reviewed on a regular, independent basis after release.
+  stride: [Tampering]
+
+- id: V032
+  name: Insufficient Resource Monitoring
+  category: observability_and_response
+  applies_to: [generative, agentic]
+  description: Compute, token, and tool usage are not observed closely enough to detect abuse, saturation, or cost overrun.
+  stride: [Denial of Service]
+
+- id: V033
+  name: Weak Incident Coordination
+  category: observability_and_response
+  applies_to: [all]
+  description: Communication and escalation plans for AI incidents are absent, outdated, or untested across security, engineering, and business teams.
+  stride: [Repudiation]
+
+- id: V034
+  name: Missing Reporting Channels
+  category: observability_and_response
+  applies_to: [all]
+  description: Employees or users have no defined way to raise concerns about harmful outputs, bias, or unsafe agent actions.
+  stride: [Repudiation]
+
+- id: V035
+  name: Missing AI Policies
+  category: governance_and_accountability
+  applies_to: [all]
+  description: The organization lacks documented standards for AI development, deployment, procurement, use, and retirement.
+  stride: [all]
+
+- id: V036
+  name: Undefined AI Roles
+  category: governance_and_accountability
+  applies_to: [all]
+  description: Ownership for model risk, data stewardship, monitoring, and incident response is not clearly assigned.
+  stride: [Repudiation]
+
+- id: V037
+  name: Lack of Design Documentation
+  category: governance_and_accountability
+  applies_to: [all]
+  description: Architecture, trust boundaries, and control points are not formally documented, making the system harder to secure and audit.
+  stride: [all]
+
+- id: V038
+  name: Weak Explainability Controls
+  category: governance_and_accountability
+  applies_to: [predictive, generative]
+  description: Outputs cannot be traced back to the inputs and decision pathway that produced them, at a depth appropriate to the use case's risk level.
+  stride: [Repudiation]
+
+- id: V039
+  name: Poor User Guidance
+  category: governance_and_accountability
+  applies_to: [all]
+  description: End users and operators receive no clear instructions on system limits, approved use, and validation steps, leaving them to improvise safety practices.
+  stride: [all]
+
+- id: V040
+  name: Weak Intended Use Controls
+  category: governance_and_accountability
+  applies_to: [all]
+  description: No technical or procedural mechanism restricts the system to its approved purpose, so a low-risk model can migrate into a higher-risk use case without new review.
+  stride: [Elevation of Privilege]
+
+- id: V041
+  name: Weak Requirements Definition
+  category: governance_and_accountability
+  applies_to: [all]
+  description: Functional, security, privacy, and fairness requirements are incomplete or undocumented, so teams cannot build or test against a clear standard.
+  stride: [all]
+
+- id: V042
+  name: Weak Planning Discipline
+  category: governance_and_accountability
+  applies_to: [all]
+  description: The project lacks structured lifecycle planning for testing, monitoring, rollback, and retirement.
+  stride: [all]
+
+- id: V043
+  name: Misaligned Business Objectives
+  category: governance_and_accountability
+  applies_to: [all]
+  description: System optimization targets do not align with enterprise policy or risk appetite, so the system can perform exactly as designed and still create harmful outcomes.
+  stride: [all]
+
+- id: V044
+  name: Weak Human Rights Assessment
+  category: governance_and_accountability
+  applies_to: [predictive, generative]
+  description: System design does not evaluate foreseeable impacts on privacy, discrimination, or due process for affected individuals.
+  stride: [all]
+
+- id: V045
+  name: Jurisdictional Control Gaps
+  category: governance_and_accountability
+  applies_to: [all]
+  description: The system operates across legal regions without mechanisms to enforce differing privacy, transparency, or retention requirements.
+  stride: [all]
+
+- id: V046
+  name: Unknown Customer Expectations
+  category: governance_and_accountability
+  applies_to: [generative, agentic]
+  description: The organization does not understand what users expect around transparency, safety, and reviewability, creating a trust gap even in a technically functioning system.
+  stride: [all]
+
+- id: V047
+  name: Over-Automation Dependence
+  category: governance_and_accountability
+  applies_to: [agentic]
+  description: A business process relies on AI output without sufficient human review, escalation paths, or compensating controls.
+  stride: [Elevation of Privilege]
+
+- id: V048
+  name: Complex Architecture Sprawl
+  category: resilience_and_infrastructure
+  applies_to: [all]
+  description: The environment contains too many interconnected, undocumented components for the team to govern effectively.
+  stride: [all]
+
+- id: V049
+  name: Single Point of Failure
+  category: resilience_and_infrastructure
+  applies_to: [all]
+  description: One component, credential, or registry can disable the entire AI capability if it fails or is compromised.
+  stride: [Denial of Service]
+
+- id: V050
+  name: Limited Redundancy
+  category: resilience_and_infrastructure
+  applies_to: [all]
+  description: Insufficient failover paths or alternate models exist to sustain operations during a component failure.
+  stride: [Denial of Service]
+
+- id: V051
+  name: Inconsistent Backups
+  category: resilience_and_infrastructure
+  applies_to: [all]
+  description: Models, prompts, indexes, and configuration state are not backed up completely or currently enough to support reliable recovery.
+  stride: [Denial of Service]
+
+- id: V052
+  name: Delayed Model Recovery
+  category: resilience_and_infrastructure
+  applies_to: [all]
+  description: Recovery procedures for models and artifacts are slow, manual, or untested, extending downtime after failure or compromise.
+  stride: [Denial of Service]
+
+- id: V053
+  name: Weak Load Distribution
+  category: resilience_and_infrastructure
+  applies_to: [all]
+  description: Requests are not balanced effectively across model instances or regions, creating bottlenecks under burst traffic.
+  stride: [Denial of Service]
+
+- id: V054
+  name: Limited Fault Tolerance
+  category: resilience_and_infrastructure
+  applies_to: [predictive, agentic]
+  description: The system lacks error handling and safe degradation for malformed inputs or environmental failures.
+  stride: [Denial of Service]
+
+- id: V055
+  name: Excessive Compute Demand
+  category: resilience_and_infrastructure
+  applies_to: [generative, agentic]
+  description: Models or orchestration flows require more compute than the environment can reliably sustain, producing brittle behavior under normal load.
+  stride: [Denial of Service]
+
+- id: V056
+  name: Edge Capacity Weakness
+  category: resilience_and_infrastructure
+  applies_to: [predictive]
+  description: Models deployed on edge devices run too close to hardware or bandwidth limits to maintain secure operation under peak conditions.
+  stride: [Denial of Service]
+
+- id: V057
+  name: Poor Hardware Assurance
+  category: hardware_and_side_channel
+  applies_to: [all]
+  description: Training or inference relies on low-quality or unverified hardware platforms, increasing risk of tampering or silent corruption.
+  stride: [Tampering]
+
+- id: V058
+  name: Weak Hardware Protection
+  category: hardware_and_side_channel
+  applies_to: [predictive]
+  description: Physical interfaces, debug ports, and firmware update channels on edge or on-premise devices are not secured against tampering.
+  stride: [Tampering]
+
+- id: V059
+  name: Observable Side Channels
+  category: hardware_and_side_channel
+  applies_to: [predictive]
+  description: Timing, power, or resource usage patterns reveal information about model execution or the data being processed.
+  stride: [Information Disclosure]
+
+- id: V060
+  name: Exposed Gradient Information
+  category: hardware_and_side_channel
+  applies_to: [predictive]
+  description: Gradient updates in federated or distributed training are shared without clipping, aggregation, or other privacy protection.
+  stride: [Information Disclosure]
+
+- id: V061
+  name: Weak Metadata Scrubbing
+  category: hardware_and_side_channel
+  applies_to: [all]
+  description: Logs, API responses, and file headers expose hidden identifiers or contextual information even when the primary data appears protected.
+  stride: [Information Disclosure]
+
+- id: V062
+  name: Weak Tokenization Security
+  category: hardware_and_side_channel
+  applies_to: [predictive]
+  description: Tokenization or masking is simplistic, reversible, or predictable, allowing sensitive data to be reconstructed.
+  stride: [Information Disclosure]
+
+- id: V063
+  name: Black-Box Dependency Reliance
+  category: third_party_and_supply_chain
+  applies_to: [all]
+  description: The organization depends on a third-party model or service without transparency into its training, controls, or update practices.
+  stride: [all]
+
+- id: V064
+  name: Weak Vendor Due Diligence
+  category: third_party_and_supply_chain
+  applies_to: [all]
+  description: Suppliers of models, data, or tooling are not rigorously assessed for security, privacy, and governance maturity before onboarding.
+  stride: [all]
+
+- id: V065
+  name: Unverified Third-Party Models
+  category: third_party_and_supply_chain
+  applies_to: [all]
+  description: Pretrained or open-source models are integrated without testing for backdoors, hidden bias, or unsafe behavior.
+  stride: [Tampering]
+
+- id: V066
+  name: Outdated Third-Party Components
+  category: third_party_and_supply_chain
+  applies_to: [all]
+  description: Open-source libraries, serving tools, or plugins in the AI stack are missing current security patches.
+  stride: [Tampering]
+
+- id: V067
+  name: Weak Supplier Oversight
+  category: third_party_and_supply_chain
+  applies_to: [all]
+  description: Vendor security posture and control effectiveness are not actively monitored after onboarding.
+  stride: [all]
+
+- id: V068
+  name: Weak Contract Governance
+  category: third_party_and_supply_chain
+  applies_to: [all]
+  description: Supplier agreements do not define security obligations, audit rights, incident notification, or model update expectations.
+  stride: [all]
+
+- id: V069
+  name: Vendor Lock-In Dependency
+  category: third_party_and_supply_chain
+  applies_to: [all]
+  description: The organization relies heavily on a single AI provider without practical alternatives or a migration path.
+  stride: [Denial of Service]
+
+- id: V070
+  name: Weak Third-Party Monitoring
+  category: third_party_and_supply_chain
+  applies_to: [all]
+  description: Supplier behavior, update cadence, and security events are not continuously observed after integration.
+  stride: [all]
+
+- id: V071
+  name: Poor Third-Party Incident Response
+  category: third_party_and_supply_chain
+  applies_to: [all]
+  description: Suppliers lack mature procedures and escalation speed for security or AI-specific incidents that cross organizational boundaries.
+  stride: [Repudiation]
+
+- id: V072
+  name: Conflicting Vendor Objectives
+  category: third_party_and_supply_chain
+  applies_to: [all]
+  description: Supplier incentives around speed, data usage, or monetization are misaligned with the organization's security or compliance requirements.
+  stride: [all]
+
+- id: V073
+  name: Vendor Data Siloing
+  category: third_party_and_supply_chain
+  applies_to: [all]
+  description: External providers control or fragment logs and performance data in ways that reduce the customer's monitoring and incident response ability.
+  stride: [Repudiation]
+
+- id: V074
+  name: Poor Resource Documentation
+  category: documentation
+  applies_to: [all]
+  description: Compute, storage, and data-interface requirements across the AI lifecycle are not clearly documented, slowing recovery and secure deployment.
+  stride: [all]
+
+- id: V075
+  name: Poor Tooling Documentation
+  category: documentation
+  applies_to: [all]
+  description: Development, training, and monitoring tools are not documented for purpose, configuration, and security expectations, creating blind spots in security review.
+  stride: [all]
+
+- id: V076
+  name: Agent Coordination Weakness
+  category: multi_agent
+  applies_to: [agentic]
+  description: Multi-agent systems lack controls for authentication, communication integrity, and behavioral monitoring between agents, letting one agent's compromise affect others.
+  stride: [Spoofing, Elevation of Privilege]

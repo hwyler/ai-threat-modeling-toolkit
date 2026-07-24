@@ -1,0 +1,373 @@
+# AI Threat Vector Catalog
+#
+# Each entry is an attack path, not a control weakness (see vulnerabilities.yaml
+# for the weaknesses that make these paths feasible). "applies_to" marks the AI
+# system type(s) where this vector is most relevant. "framework" points to the
+# maintained external source with the closest matching coverage; consult that
+# source directly for current technique IDs and version numbers, since these
+# frameworks are updated on an ongoing basis.
+#
+# Fields:
+#   id            stable identifier
+#   name          short label
+#   applies_to    [predictive, generative, agentic] subset
+#   description   one to two sentence, plain-language statement of the attack path
+#   related_vulnerabilities   ids from vulnerabilities.yaml that enable this vector
+#   framework     closest maintained external reference
+#
+# Top-level structure: a "vectors" list holds every entry; a "priority"
+# mapping at the bottom groups vector ids by AI system type for quick
+# filtering (see tools/generate_checklist.py).
+
+vectors:
+
+- id: T001
+  name: Prompt Injection
+  applies_to: [generative, agentic]
+  description: An attacker supplies malicious instructions through user input, a document, a webpage, or a tool output to override the system's intended instructions.
+  related_vulnerabilities: [V004, V002]
+  framework: OWASP Top 10 for LLM Applications (LLM01); MITRE ATLAS, Initial Access
+
+- id: T002
+  name: Indirect Prompt Injection
+  applies_to: [generative, agentic]
+  description: Malicious instructions are embedded in external content, such as a retrieved document or an email, that the model later processes as part of a task, without any direct interaction from the attacker.
+  related_vulnerabilities: [V004, V020, V021]
+  framework: OWASP Top 10 for LLM Applications (LLM01); MITRE ATLAS
+
+- id: T003
+  name: Data Poisoning
+  applies_to: [predictive, generative]
+  description: An attacker inserts or modifies training, fine-tuning, feedback, or retrieval data to degrade model performance broadly or to plant a targeted backdoor.
+  related_vulnerabilities: [V014, V016, V020]
+  framework: NIST AI 100-2; OWASP Top 10 for LLM Applications (LLM04)
+
+- id: T004
+  name: Label Poisoning
+  applies_to: [predictive]
+  description: Labels in a supervised training set are corrupted or systematically skewed to shift the model's decision boundary while raw feature data stays unchanged.
+  related_vulnerabilities: [V014, V016]
+  framework: NIST AI 100-2
+
+- id: T005
+  name: Backdoor Injection
+  applies_to: [predictive, generative]
+  description: A hidden trigger is embedded in training data or model behavior so the system acts normally except when the trigger condition appears.
+  related_vulnerabilities: [V014, V065, V010]
+  framework: MITRE ATLAS; NIST AI 100-2
+
+- id: T006
+  name: RAG Corpus Poisoning
+  applies_to: [generative]
+  description: Malicious or misleading content is placed in a document repository or vector database that the model later retrieves and treats as authoritative.
+  related_vulnerabilities: [V020, V021, V013]
+  framework: OWASP Top 10 for LLM Applications (LLM04, LLM08)
+
+- id: T007
+  name: Adversarial Evasion
+  applies_to: [predictive]
+  description: An attacker crafts an input with small, deliberate perturbations that cause the model to misclassify or mis-rank it at inference time.
+  related_vulnerabilities: [V025]
+  framework: NIST AI 100-2; MITRE ATLAS
+
+- id: T008
+  name: Model Extraction via Queries
+  applies_to: [predictive, generative]
+  description: An attacker systematically queries a model API to learn its decision behavior closely enough to reproduce a functional copy offline.
+  related_vulnerabilities: [V003, V002]
+  framework: MITRE ATLAS, Exfiltration; OWASP Top 10 for LLM Applications (LLM10)
+
+- id: T009
+  name: Functional Extraction
+  applies_to: [predictive, generative]
+  description: An attacker reproduces a model's operational behavior closely enough for downstream misuse, without necessarily obtaining the exact weights.
+  related_vulnerabilities: [V003]
+  framework: MITRE ATLAS
+
+- id: T010
+  name: Model Inversion
+  applies_to: [predictive]
+  description: An attacker analyzes model outputs to reconstruct sensitive attributes or approximations of the records used to train the model.
+  related_vulnerabilities: [V022, V023, V003]
+  framework: NIST AI 100-2
+
+- id: T011
+  name: Membership Inference
+  applies_to: [predictive, generative]
+  description: An attacker determines whether a specific individual's record was part of the model's training data, which can itself be a privacy violation in sensitive domains.
+  related_vulnerabilities: [V023, V003]
+  framework: NIST AI 100-2
+
+- id: T012
+  name: Gradient Leakage
+  applies_to: [predictive]
+  description: An attacker reconstructs training examples or infers sensitive information from gradient updates shared during federated or distributed training.
+  related_vulnerabilities: [V060]
+  framework: NIST AI 100-2
+
+- id: T013
+  name: Sensitive Data Extraction
+  applies_to: [all]
+  description: An attacker recovers confidential training data, personal data, secrets, or proprietary knowledge from the model, its outputs, or surrounding storage.
+  related_vulnerabilities: [V022, V023, V061, V002]
+  framework: OWASP Top 10 for LLM Applications (LLM02)
+
+- id: T014
+  name: Bias Exploitation Through Imbalanced Data
+  applies_to: [predictive]
+  description: An attacker or a negligent process takes advantage of underrepresented groups or skewed training data to produce discriminatory or steerable outcomes.
+  related_vulnerabilities: [V016, V044]
+  framework: NIST AI 100-2
+
+- id: T015
+  name: Hallucination Exploitation
+  applies_to: [generative, agentic]
+  description: An attacker deliberately induces a model to produce false or fabricated content, then uses that output to deceive a user or contaminate a downstream workflow.
+  related_vulnerabilities: [V038, V047]
+  framework: OWASP Top 10 for LLM Applications
+
+- id: T016
+  name: Toxicity Induction
+  applies_to: [generative]
+  description: An attacker provokes a model into generating hateful, abusive, or otherwise harmful content, including through role-play, paraphrase, or coded language.
+  related_vulnerabilities: [V004]
+  framework: OWASP Top 10 for LLM Applications
+
+- id: T017
+  name: Dual-Use or Malicious Repurposing
+  applies_to: [generative, agentic]
+  description: A model built for legitimate enterprise use is repurposed, stolen, or adapted for fraud, misinformation, or surveillance by an employee, customer, or external actor.
+  related_vulnerabilities: [V040, V047]
+  framework: OWASP Top 10 for LLM Applications
+
+- id: T018
+  name: Unsafe Content Repurposing
+  applies_to: [generative]
+  description: A model is used to generate phishing content, fraudulent documents, or social engineering material despite policy controls intended to prevent it.
+  related_vulnerabilities: [V040]
+  framework: OWASP Top 10 for LLM Applications
+
+- id: T019
+  name: Synthetic Identity and Deepfake Enablement
+  applies_to: [generative]
+  description: Image, audio, or text synthesis capability is used to create realistic fake personas or impersonation content that supports fraud or disinformation.
+  related_vulnerabilities: [V040]
+  framework: OWASP Top 10 for LLM Applications
+
+- id: T020
+  name: Overreliance / Automation Bias
+  applies_to: [all]
+  description: Users accept model output with insufficient scrutiny, propagating model error or manipulation into high-stakes decisions.
+  related_vulnerabilities: [V047, V039]
+  framework: OWASP Top 10 for LLM Applications; OWASP Top 10 for Agentic Applications
+
+- id: T021
+  name: Shadow AI Use
+  applies_to: [generative]
+  description: Employees introduce unapproved AI tools outside security and compliance review, routing sensitive business data to unsanctioned systems.
+  related_vulnerabilities: [V040, V035]
+  framework: NIST AI Risk Management Framework, Govern function
+
+- id: T022
+  name: API Abuse
+  applies_to: [all]
+  description: An attacker exploits weak authentication, missing rate limits, or insecure parameter handling in an exposed AI API to manipulate behavior, extract data, or degrade service.
+  related_vulnerabilities: [V002, V003]
+  framework: OWASP Top 10 for LLM Applications (LLM10)
+
+- id: T023
+  name: API Token Compromise
+  applies_to: [all]
+  description: An attacker steals or reuses credentials for AI models, tools, or cloud resources, often found exposed in prompts, logs, code repositories, or automation pipelines.
+  related_vulnerabilities: [V001, V009]
+  framework: MITRE ATLAS, Credential Access
+
+- id: T024
+  name: Third-Party Component Compromise
+  applies_to: [all]
+  description: An attacker exploits or subverts an external model, library, or model-serving component that the AI system depends on.
+  related_vulnerabilities: [V065, V066, V063]
+  framework: OWASP Top 10 for LLM Applications (LLM03)
+
+- id: T025
+  name: Parameter Tampering
+  applies_to: [all]
+  description: An attacker or unauthorized insider modifies model weights, prompts, thresholds, or safety configuration to alter system behavior in a way that ordinary monitoring is unlikely to catch quickly.
+  related_vulnerabilities: [V011, V008]
+  framework: MITRE ATLAS
+
+- id: T026
+  name: Insider Sabotage
+  applies_to: [all]
+  description: Authorized personnel intentionally corrupt training data, alter prompts, or weaken monitoring, taking advantage of the broad access common in AI development roles.
+  related_vulnerabilities: [V001, V008]
+  framework: NIST AI Risk Management Framework, Govern function
+
+- id: T027
+  name: Insider Subversion
+  applies_to: [all]
+  description: Internal personnel are bribed, coerced, or recruited to steal AI assets or manipulate system behavior on behalf of an external party.
+  related_vulnerabilities: [V001, V009]
+  framework: NIST AI Risk Management Framework, Govern function
+
+- id: T028
+  name: Espionage Against AI Assets
+  applies_to: [all]
+  description: An external party infiltrates the organization or a supplier to steal training data, model artifacts, or strategic AI plans.
+  related_vulnerabilities: [V009, V064]
+  framework: MITRE ATLAS, Exfiltration
+
+- id: T029
+  name: Data Provenance Falsification
+  applies_to: [all]
+  description: Lineage records, ownership fields, or timestamps are altered to disguise the true origin of AI data, allowing poisoned or noncompliant data to appear legitimate.
+  related_vulnerabilities: [V013]
+  framework: NIST AI 100-2
+
+- id: T030
+  name: Eavesdropping on Inputs
+  applies_to: [all]
+  description: An attacker intercepts prompts, uploaded files, or sensor streams before the AI system processes them.
+  related_vulnerabilities: [V002]
+  framework: NIST AI Risk Management Framework
+
+- id: T031
+  name: Eavesdropping on Outputs
+  applies_to: [all]
+  description: An attacker intercepts model responses, decision results, or tool results as they leave the system, exposing confidential logic or personal data.
+  related_vulnerabilities: [V028, V061]
+  framework: NIST AI Risk Management Framework
+
+- id: T032
+  name: Physical Tampering
+  applies_to: [predictive]
+  description: An attacker manipulates hardware, storage media, or edge devices to alter, disable, or exfiltrate an AI system component.
+  related_vulnerabilities: [V058, V057]
+  framework: NIST AI 100-2
+
+- id: T033
+  name: Hardware Trojan Insertion
+  applies_to: [predictive]
+  description: Malicious logic is introduced into accelerators, sensors, or firmware used by an AI system, bypassing most software-layer controls.
+  related_vulnerabilities: [V057]
+  framework: NIST AI 100-2
+
+- id: T034
+  name: Fault Injection
+  applies_to: [predictive]
+  description: An attacker induces errors through voltage, heat, or sensor interference to cause an embedded or edge AI system to malfunction, often silently.
+  related_vulnerabilities: [V054, V058]
+  framework: NIST AI 100-2
+
+- id: T035
+  name: Neglected Patching Exploitation
+  applies_to: [all]
+  description: An attacker exploits unpatched frameworks, runtimes, or model-serving components in the AI stack.
+  related_vulnerabilities: [V066]
+  framework: Common Vulnerabilities and Exposures program; OWASP Top 10 for LLM Applications (LLM03)
+
+- id: T036
+  name: Black-Box Manipulation
+  applies_to: [predictive, generative]
+  description: An attacker probes a model's behavior through trial and error to find blind spots or policy inconsistencies without needing internal access to weights or architecture.
+  related_vulnerabilities: [V038]
+  framework: MITRE ATLAS
+
+- id: T037
+  name: Model Drift Exploitation
+  applies_to: [predictive, generative]
+  description: An attacker times or steers an attack to exploit a period when the model is poorly calibrated to current conditions because drift was not detected.
+  related_vulnerabilities: [V027]
+  framework: NIST AI Risk Management Framework, Measure function
+
+- id: T038
+  name: Generalization Failure Exploitation
+  applies_to: [predictive]
+  description: An attacker deliberately searches for out-of-distribution or weakly represented inputs to force incorrect model behavior on realistic but unusual data.
+  related_vulnerabilities: [V025]
+  framework: NIST AI 100-2
+
+- id: T039
+  name: Transparency Deficit Exploitation
+  applies_to: [all]
+  description: An attacker or a negligent process benefits from the organization's inability to explain or audit model decisions, hiding biased outcomes or manipulated behavior.
+  related_vulnerabilities: [V038, V030]
+  framework: NIST AI Risk Management Framework, Govern function
+
+- id: T040
+  name: Homogenization Risk Exploitation
+  applies_to: [all]
+  description: An attacker targets a widely adopted model or dependency, knowing that a single exploit path can affect many downstream systems at once.
+  related_vulnerabilities: [V063, V066]
+  framework: OWASP Top 10 for LLM Applications (LLM03)
+
+- id: T041
+  name: Unauthorized Tool Use
+  applies_to: [agentic]
+  description: A model or agent is induced to call plugins, APIs, or enterprise systems in ways that violate its intended authority, moving impact from unsafe output to unsafe action.
+  related_vulnerabilities: [V005, V006]
+  framework: OWASP Top 10 for Agentic Applications (ASI02)
+
+- id: T042
+  name: Tool Output Manipulation
+  applies_to: [agentic]
+  description: An attacker poisons or spoofs the output returned by an API, database, or enterprise tool that an agent relies on, misleading its planning without touching the model directly.
+  related_vulnerabilities: [V004]
+  framework: OWASP Top 10 for Agentic Applications; MITRE ATLAS
+
+- id: T043
+  name: Memory Poisoning
+  applies_to: [agentic]
+  description: An attacker inserts false facts, hidden goals, or misleading context into an agent's persistent memory, a compromise that can outlast the original malicious input across sessions.
+  related_vulnerabilities: [V006, V004]
+  framework: OWASP Top 10 for Agentic Applications (ASI06); MITRE ATLAS
+
+- id: T044
+  name: Goal Hijacking
+  applies_to: [agentic]
+  description: An attacker causes an agent to reinterpret its objective or deprioritize safety constraints through prompt manipulation, malicious context, or task reframing.
+  related_vulnerabilities: [V004, V006]
+  framework: OWASP Top 10 for Agentic Applications (ASI01)
+
+- id: T045
+  name: Excessive Agency Abuse
+  applies_to: [agentic]
+  description: A model or agent with excessive permissions or autonomy is induced to perform actions beyond its intended scope, such as writing, deleting, or transacting without independent review.
+  related_vulnerabilities: [V005, V047]
+  framework: OWASP Top 10 for LLM Applications (LLM06); OWASP Top 10 for Agentic Applications
+
+- id: T046
+  name: Autonomous Action Chaining Abuse
+  applies_to: [agentic]
+  description: An attacker exploits the agent's ability to plan multi-step actions that are individually permitted but collectively harmful, evading controls that inspect only single actions.
+  related_vulnerabilities: [V005, V006]
+  framework: OWASP Top 10 for Agentic Applications
+
+- id: T047
+  name: Agent Collusion
+  applies_to: [agentic]
+  description: Multiple agents coordinate, intentionally or emergently, to manipulate decisions or bypass controls in a multi-agent environment with weak identity separation between agents.
+  related_vulnerabilities: [V076]
+  framework: OWASP Top 10 for Agentic Applications
+
+- id: T048
+  name: Context Window Flooding
+  applies_to: [generative, agentic]
+  description: An attacker overloads the model's context with large or adversarially ordered content to push trusted instructions out of effective context and improve the odds of a successful injection.
+  related_vulnerabilities: [V004]
+  framework: OWASP Top 10 for LLM Applications
+
+- id: T049
+  name: Denial of Service / Denial of Wallet
+  applies_to: [all]
+  description: An attacker exhausts compute, token, memory, or budget resources, reducing availability or sharply increasing operating cost without necessarily needing high traffic volume.
+  related_vulnerabilities: [V003, V032, V055]
+  framework: OWASP Top 10 for LLM Applications (LLM10)
+
+## Priority groupings by AI system type
+
+priority:
+  predictive: [T003, T004, T005, T007, T010, T011, T012, T014, T037, T038]
+  generative: [T001, T002, T015, T016, T006, T013, T022, T008, T018, T020]
+  agentic: [T001, T041, T045, T044, T043, T042, T046, T047, T023, T049]
+  cross_cutting: [T024, T022, T023, T013, T026, T027, T028, T032, T035, T021]
