@@ -1,0 +1,15 @@
+Contributing
+This catalog is only useful if it stays current. AI-specific threats change faster than most security taxonomies, so contributions that keep it aligned with maintained external frameworks are the most valuable kind.
+Adding a vulnerability or threat vector
+Check whether it already exists under a different name. Search `data/vulnerabilities.yaml` or `data/threat_vectors.yaml` for related terms before adding a new entry.
+Use the next sequential id in the relevant file. Do not renumber or reuse an existing id, since risk registers and reports may reference it.
+Write the description in one or two plain-language sentences: what the weakness or attack path is, not why it matters or how severe it is. Severity is assessed per system in the risk register, not fixed in the catalog.
+Set `applies_to` honestly. If you are not sure whether an item applies to predictive systems, agentic systems, or both, open the pull request with your best guess and flag the uncertainty in the description; a reviewer with more context can correct it.
+For threat vectors, cite the closest maintained framework in the `framework` field. A citation to MITRE ATLAS, the OWASP LLM or Agentic Top 10, or NIST AI 100-2 is strongly preferred. An uncited entry will be merged but flagged for follow-up.
+Update the matching narrative doc (`docs/03-vulnerability-catalog.md` or `docs/04-threat-vector-catalog.md`) in the same pull request so the YAML and the prose never drift apart.
+Correcting a framework citation
+Frameworks referenced here (MITRE ATLAS, OWASP's LLM and Agentic Top 10 lists, NIST AI 100-2) are updated on their own schedules. If a citation is stale, a pull request that updates the `framework` field, along with a link to the current source, is welcome without needing to touch anything else.
+Reporting an issue
+Use the issue templates in `.github/ISSUE_TEMPLATE/`. Separate templates exist for a new catalog entry and for a correction to an existing one.
+Style
+Write in plain, direct business English. Avoid hedging phrases, marketing language, and unnecessary jargon. Every catalog entry should be understandable to a technical reader who is not a machine learning specialist.
