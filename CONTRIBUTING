@@ -11,5 +11,3 @@ Correcting a framework citation
 Frameworks referenced here (MITRE ATLAS, OWASP's LLM and Agentic Top 10 lists, NIST AI 100-2) are updated on their own schedules. If a citation is stale, a pull request that updates the `framework` field, along with a link to the current source, is welcome without needing to touch anything else.
 Reporting an issue
 Use the issue templates in `.github/ISSUE_TEMPLATE/`. Separate templates exist for a new catalog entry and for a correction to an existing one.
-Style
-Write in plain, direct business English. Avoid hedging phrases, marketing language, and unnecessary jargon. Every catalog entry should be understandable to a technical reader who is not a machine learning specialist.
