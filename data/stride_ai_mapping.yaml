@@ -1,0 +1,62 @@
+# Compact index from each STRIDE-AI category (docs/02-stride-ai.md) to the
+# threat vector ids in threat_vectors.yaml that fall under it. A threat vector
+# can appear under more than one category when it spans trust boundaries.
+
+spoofing:
+  - T001   # Prompt Injection
+  - T002   # Indirect Prompt Injection
+  - T005   # Backdoor Injection
+  - T024   # Third-Party Component Compromise
+  - T042   # Tool Output Manipulation
+  - T029   # Data Provenance Falsification
+
+tampering:
+  - T003   # Data Poisoning
+  - T004   # Label Poisoning
+  - T005   # Backdoor Injection
+  - T006   # RAG Corpus Poisoning
+  - T025   # Parameter Tampering
+  - T043   # Memory Poisoning
+  - T032   # Physical Tampering
+  - T033   # Hardware Trojan Insertion
+
+repudiation:
+  - T029   # Data Provenance Falsification
+  - T026   # Insider Sabotage
+  - T027   # Insider Subversion
+  - T037   # Model Drift Exploitation
+  - T039   # Transparency Deficit Exploitation
+
+information_disclosure:
+  - T013   # Sensitive Data Extraction
+  - T010   # Model Inversion
+  - T011   # Membership Inference
+  - T012   # Gradient Leakage
+  - T008   # Model Extraction via Queries
+  - T030   # Eavesdropping on Inputs
+  - T031   # Eavesdropping on Outputs
+  - T028   # Espionage Against AI Assets
+
+denial_of_service:
+  - T049   # Denial of Service / Denial of Wallet
+  - T048   # Context Window Flooding
+  - T046   # Autonomous Action Chaining Abuse
+  - T022   # API Abuse
+
+elevation_of_privilege:
+  - T041   # Unauthorized Tool Use
+  - T044   # Goal Hijacking
+  - T045   # Excessive Agency Abuse
+  - T047   # Agent Collusion
+  - T023   # API Token Compromise
+
+not_captured_by_stride:
+  # AI-specific risk categories that need direct attention rather than
+  # being folded into a STRIDE letter. See docs/02-stride-ai.md, final section.
+  - T007   # Adversarial Evasion
+  - T015   # Hallucination Exploitation
+  - T016   # Toxicity Induction
+  - T017   # Dual-Use or Malicious Repurposing
+  - T020   # Overreliance / Automation Bias
+  - T038   # Generalization Failure Exploitation
+  - T040   # Homogenization Risk Exploitation
