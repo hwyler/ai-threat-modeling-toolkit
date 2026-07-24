@@ -1,0 +1,2 @@
+finding_id,date_identified,asset,threat_vector_id,threat_vector_name,related_vulnerability_id,related_vulnerability_name,scenario_description,likelihood_1_5,impact_1_5,risk_score,owner,mitigation,mitigation_status,target_date,residual_risk_accepted_by
+F001,,,,,,,,,,,,,,,
