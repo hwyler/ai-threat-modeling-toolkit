@@ -20,7 +20,11 @@ ai-threat-modeling-toolkit/
 │   ├── 03-vulnerability-catalog.md  Narrative version of the vulnerability catalog
 │   ├── 04-threat-vector-catalog.md  Narrative version of the threat vector catalog
 │   ├── 05-threat-modeling-guide.md  How to build a model per AI system type, with a worked example
-│   └── 06-source-alignment.md     Cross-reference table to MITRE ATLAS, OWASP, NIST, ISO
+│   ├── 06-source-alignment.md     Cross-reference table to MITRE ATLAS, OWASP, NIST, ISO
+│   ├── 07-vulnerability-guide.md  Full-detail entry for every cataloged vulnerability, not summarized
+│   ├── 08-threat-guide.md         Full-detail entry for every cataloged threat vector, not summarized
+│   ├── 09-threat-model-report-template.md  Fillable red-team threat model report, questionnaire-driven
+│   └── 10-control-guidance.md     ISO/IEC 42001 Annex A controls linked to the vulnerability catalog
 ├── data/
 │   ├── vulnerabilities.yaml       Machine-readable vulnerability catalog
 │   ├── threat_vectors.yaml        Machine-readable threat vector catalog
@@ -64,6 +68,7 @@ NIST AI 100-2	NIST	Taxonomy of adversarial machine learning attacks by lifecycle
 NIST AI Risk Management Framework	NIST	Lifecycle governance structure (Govern, Map, Measure, Manage)
 ISO/IEC 42001	ISO/IEC	AI management system requirements used for the six-phase process
 See `docs/06-source-alignment.md` for the full cross-reference table with specific mappings.
+
 Contributing
 Threat vectors and vulnerabilities in AI systems change faster than most catalogs can track. See `CONTRIBUTING.md` for how to propose a new entry, update a mapping, or correct a citation. Every new entry needs at minimum a plain-language description and a mapped AI system type; a citation to a maintained framework is strongly preferred over an uncited addition.
 
